@@ -215,6 +215,31 @@ let quizQuestions = [];
 let quizIndex = 0;
 let quizScore = 0;
 
+// Progress persistence
+function loadProgress() {
+  try {
+    return JSON.parse(localStorage.getItem("c207_progress") || "{}");
+  } catch { return {}; }
+}
+function saveProgress(data) {
+  localStorage.setItem("c207_progress", JSON.stringify(data));
+}
+function getSectionProgress(sectionId) {
+  const p = loadProgress();
+  return p[sectionId] || { score: 0, total: 0, completed: false, lastQ: 0 };
+}
+function updateSectionProgress(sectionId, score, total) {
+  const p = loadProgress();
+  p[sectionId] = { score, total, completed: score === total, lastQ: total, timestamp: Date.now() };
+  saveProgress(p);
+}
+function resetSectionProgress(sectionId) {
+  const p = loadProgress();
+  delete p[sectionId];
+  saveProgress(p);
+}
+
+
 function render() {
   const app = document.getElementById("app");
   const nav = document.getElementById("nav");
@@ -422,6 +447,19 @@ function quizNext() {
   answered = false;
   selected = null;
   renderQuiz();
+}
+
+
+function resetThisSection() {
+  const s = SECTIONS[currentSection];
+  if (confirm("Reset progress for " + s.title + "?")) {
+    resetSectionProgress(s.id);
+    score = 0;
+    currentQ = 0;
+    answered = false;
+    selected = null;
+    renderSectionQuiz();
+  }
 }
 
 // Init

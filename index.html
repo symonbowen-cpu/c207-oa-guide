@@ -6,7 +6,10 @@
 <meta name="theme-color" content="#0E141B" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="C207" />
+<meta name="apple-mobile-web-app-title" content="C207 OA" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <link rel="manifest" href="manifest.json" />
 <title>C207 OA Guide</title>
 <style>
@@ -43,5 +46,13 @@
 <div class="app" id="app"></div>
 <nav class="nav" id="nav"></nav>
 <script src="app.js"></script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(err => console.log("SW failed", err));
+  });
+}
+</script>
 </body>
 </html>
